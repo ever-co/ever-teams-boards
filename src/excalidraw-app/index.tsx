@@ -1,6 +1,6 @@
 import polyfill from "../polyfill";
 import LanguageDetector from "i18next-browser-languagedetector";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "../analytics";
 import { getDefaultAppState } from "../appState";
 import { ErrorDialog } from "../components/ErrorDialog";
@@ -95,6 +95,7 @@ import { ShareableLinkDialog } from "../components/ShareableLinkDialog";
 import { openConfirmModal } from "../components/OverwriteConfirm/OverwriteConfirmState";
 import { OverwriteConfirmDialog } from "../components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../components/Trans";
+import { Authenticator } from "./auth";
 
 polyfill();
 
@@ -301,11 +302,21 @@ const ExcalidrawWrapper = () => {
   const [isCollaborating] = useAtomWithInitialValue(isCollaboratingAtom, () => {
     return isCollaborationLink(window.location.href);
   });
+  const autoStartLive = useRef(false);
 
   useHandleLibrary({
     excalidrawAPI,
     getInitialLibraryItems: getLibraryItemsFromStorage,
   });
+
+  const autoStartCollaboration = useCallback(
+    (collabAPI: CollabAPI) => {
+      // collabAPI.setUsername();
+      setCollabDialogShown(true);
+      collabAPI.startCollaboration(null);
+    },
+    [setCollabDialogShown],
+  );
 
   useEffect(() => {
     if (!excalidrawAPI || (!isCollabDisabled && !collabAPI)) {
@@ -379,10 +390,22 @@ const ExcalidrawWrapper = () => {
       }
     };
 
-    initializeScene({ collabAPI, excalidrawAPI }).then(async (data) => {
-      loadImages(data, /* isInitialLoad */ true);
-      initialStatePromiseRef.current.promise.resolve(data.scene);
-    });
+    // check if the current url has live params
+    const currentUrl = new URL(location.href);
+    if (currentUrl.searchParams.get("live") === "true") {
+      autoStartLive.current = true;
+    }
+
+    initializeScene({ collabAPI, excalidrawAPI })
+      .then(async (data) => {
+        loadImages(data, /* isInitialLoad */ true);
+        initialStatePromiseRef.current.promise.resolve(data.scene);
+      })
+      .then(() => {
+        if (autoStartLive.current && collabAPI) {
+          autoStartCollaboration(collabAPI);
+        }
+      });
 
     const onHashChange = async (event: HashChangeEvent) => {
       event.preventDefault();
@@ -505,7 +528,13 @@ const ExcalidrawWrapper = () => {
       );
       clearTimeout(titleTimeout);
     };
-  }, [isCollabDisabled, collabAPI, excalidrawAPI, setLangCode]);
+  }, [
+    isCollabDisabled,
+    autoStartCollaboration,
+    collabAPI,
+    excalidrawAPI,
+    setLangCode,
+  ]);
 
   useEffect(() => {
     const unloadHandler = (event: BeforeUnloadEvent) => {
@@ -789,9 +818,11 @@ const ExcalidrawWrapper = () => {
 const ExcalidrawApp = () => {
   return (
     <TopErrorBoundary>
-      <Provider unstable_createStore={() => appJotaiStore}>
-        <ExcalidrawWrapper />
-      </Provider>
+      <Authenticator>
+        <Provider unstable_createStore={() => appJotaiStore}>
+          <ExcalidrawWrapper />
+        </Provider>
+      </Authenticator>
     </TopErrorBoundary>
   );
 };
