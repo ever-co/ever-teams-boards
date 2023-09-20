@@ -315,7 +315,7 @@ const ExcalidrawWrapper = () => {
       setCollabDialogShown(true);
       collabAPI.startCollaboration(null);
     },
-    [setCollabDialogShown, authUser],
+    [setCollabDialogShown],
   );
 
   useEffect(() => {
