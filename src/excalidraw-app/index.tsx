@@ -818,11 +818,11 @@ const ExcalidrawWrapper = () => {
 const ExcalidrawApp = () => {
   return (
     <TopErrorBoundary>
-      <Authenticator>
-        <Provider unstable_createStore={() => appJotaiStore}>
+      <Provider unstable_createStore={() => appJotaiStore}>
+        <Authenticator>
           <ExcalidrawWrapper />
-        </Provider>
-      </Authenticator>
+        </Authenticator>
+      </Provider>
     </TopErrorBoundary>
   );
 };
