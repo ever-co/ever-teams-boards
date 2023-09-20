@@ -95,7 +95,7 @@ import { ShareableLinkDialog } from "../components/ShareableLinkDialog";
 import { openConfirmModal } from "../components/OverwriteConfirm/OverwriteConfirmState";
 import { OverwriteConfirmDialog } from "../components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../components/Trans";
-import { Authenticator } from "./auth";
+import { Authenticator, authUserAtom } from "./auth";
 
 polyfill();
 
@@ -303,6 +303,7 @@ const ExcalidrawWrapper = () => {
     return isCollaborationLink(window.location.href);
   });
   const autoStartLive = useRef(false);
+  const authUser = useAtomValue(authUserAtom);
 
   useHandleLibrary({
     excalidrawAPI,
@@ -311,16 +312,19 @@ const ExcalidrawWrapper = () => {
 
   const autoStartCollaboration = useCallback(
     (collabAPI: CollabAPI) => {
-      // collabAPI.setUsername();
       setCollabDialogShown(true);
       collabAPI.startCollaboration(null);
     },
-    [setCollabDialogShown],
+    [setCollabDialogShown, authUser],
   );
 
   useEffect(() => {
     if (!excalidrawAPI || (!isCollabDisabled && !collabAPI)) {
       return;
+    }
+
+    if (collabAPI && authUser) {
+      collabAPI.setUsername(authUser.name);
     }
 
     const loadImages = (
@@ -531,6 +535,7 @@ const ExcalidrawWrapper = () => {
   }, [
     isCollabDisabled,
     autoStartCollaboration,
+    authUser,
     collabAPI,
     excalidrawAPI,
     setLangCode,
