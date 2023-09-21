@@ -29,7 +29,7 @@ interface ImportMetaEnv {
   FAST_REFRESH: string;
 
   // GAUZY Server
-  VITE_APP_GAUZY_SERVER_URL: string;
+  VITE_APP_GAUZY_API_URL: string;
 
   // MATOMO
   VITE_APP_MATOMO_URL: string;

@@ -1,7 +1,7 @@
 import { atom, useSetAtom } from "jotai";
 import { PropsWithChildren, useEffect, useState } from "react";
 
-const GAUZY_SERVER_URL = import.meta.env.VITE_APP_GAUZY_SERVER_URL;
+const GAUZY_API_URL = import.meta.env.VITE_APP_GAUZY_API_URL;
 const TOKEN_COOKIE_NAME = "auth-token";
 const style = {
   display: "flex",
@@ -16,7 +16,7 @@ const style = {
 export const authUserAtom = atom<AuthUser | null>(null);
 
 const fetchAuthUser = async (access_token: string) => {
-  return fetch(`${GAUZY_SERVER_URL}/user/me`, {
+  return fetch(`${GAUZY_API_URL}/user/me`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
