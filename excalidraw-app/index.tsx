@@ -1,18 +1,18 @@
-import polyfill from "../polyfill";
+import polyfill from "../src/polyfill";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { trackEvent } from "../analytics";
-import { getDefaultAppState } from "../appState";
-import { ErrorDialog } from "../components/ErrorDialog";
-import { TopErrorBoundary } from "../components/TopErrorBoundary";
+import { trackEvent } from "../src/analytics";
+import { getDefaultAppState } from "../src/appState";
+import { ErrorDialog } from "../src/components/ErrorDialog";
+import { TopErrorBoundary } from "../src/components/TopErrorBoundary";
 import {
   APP_NAME,
   EVENT,
   THEME,
   TITLE_TIMEOUT,
   VERSION_TIMEOUT,
-} from "../constants";
-import { loadFromBlob } from "../data/blob";
+} from "../src/constants";
+import { loadFromBlob } from "../src/data/blob";
 import {
   ExcalidrawElement,
   FileId,
@@ -102,8 +102,7 @@ import { ShareableLinkDialog } from "../src/components/ShareableLinkDialog";
 import { openConfirmModal } from "../src/components/OverwriteConfirm/OverwriteConfirmState";
 import { OverwriteConfirmDialog } from "../src/components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../src/components/Trans";
-import { Authenticator } from "./auth";
-import { Authenticator, authUserAtom } from "./auth";
+import { Authenticator, authUserAtom } from "../src/excalidraw-app/auth";
 
 polyfill();
 
@@ -831,13 +830,11 @@ const ExcalidrawWrapper = () => {
 const ExcalidrawApp = () => {
   return (
     <TopErrorBoundary>
-      <Authenticator>
       <Provider unstable_createStore={() => appJotaiStore}>
         <Authenticator>
         <ExcalidrawWrapper />
         </Authenticator>
       </Provider>
-      </Authenticator>
     </TopErrorBoundary>
   );
 };
