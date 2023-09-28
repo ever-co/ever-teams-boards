@@ -1,9 +1,9 @@
-import polyfill from "../polyfill";
+import polyfill from "../src/polyfill";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { trackEvent } from "../analytics";
-import { getDefaultAppState } from "../appState";
-import { ErrorDialog } from "../components/ErrorDialog";
+import { trackEvent } from "../src/analytics";
+import { getDefaultAppState } from "../src/appState";
+import { ErrorDialog } from "../src/components/ErrorDialog";
 import { TopErrorBoundary } from "../components/TopErrorBoundary";
 import {
   APP_NAME,
@@ -11,8 +11,8 @@ import {
   THEME,
   TITLE_TIMEOUT,
   VERSION_TIMEOUT,
-} from "../constants";
-import { loadFromBlob } from "../data/blob";
+} from "../src/constants";
+import { loadFromBlob } from "../src/data/blob";
 import {
   ExcalidrawElement,
   FileId,
@@ -76,7 +76,7 @@ import {
 import {
   ExportToExcalidrawPlus,
   exportToExcalidrawPlus,
-} from "./components/ExportToExcalidrawPlus";
+} from "./src/components/ExportToExcalidrawPlus";
 import { updateStaleImageStatuses } from "./data/FileManager";
 import { newElementWith } from "../src/element/mutateElement";
 import { isInitializedImageElement } from "../src/element/typeChecks";
