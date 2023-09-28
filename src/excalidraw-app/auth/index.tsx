@@ -24,6 +24,7 @@ const fetchAuthUser = async (access_token: string) => {
 };
 
 export function Authenticator(props: PropsWithChildren) {
+  //  return <>{props.children}</>;
   const setAuthUser = useSetAtom(authUserAtom);
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
 
