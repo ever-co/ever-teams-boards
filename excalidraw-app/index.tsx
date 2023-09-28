@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "../src/analytics";
 import { getDefaultAppState } from "../src/appState";
 import { ErrorDialog } from "../src/components/ErrorDialog";
-import { TopErrorBoundary } from "./components/TopErrorBoundary";
+import { TopErrorBoundary } from "../src/components/TopErrorBoundary";
 import {
   APP_NAME,
   EVENT,
@@ -76,7 +76,7 @@ import {
 import {
   ExportToExcalidrawPlus,
   exportToExcalidrawPlus,
-} from "./src/components/ExportToExcalidrawPlus";
+} from "./components/ExportToExcalidrawPlus";
 import { updateStaleImageStatuses } from "./data/FileManager";
 import { newElementWith } from "../src/element/mutateElement";
 import { isInitializedImageElement } from "../src/element/typeChecks";
@@ -102,8 +102,7 @@ import { ShareableLinkDialog } from "../src/components/ShareableLinkDialog";
 import { openConfirmModal } from "../src/components/OverwriteConfirm/OverwriteConfirmState";
 import { OverwriteConfirmDialog } from "../src/components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../src/components/Trans";
-import { Authenticator } from "./auth";
-import { Authenticator, authUserAtom } from "./auth";
+import { Authenticator, authUserAtom } from "../src/excalidraw-app/auth";
 
 polyfill();
 
@@ -831,13 +830,11 @@ const ExcalidrawWrapper = () => {
 const ExcalidrawApp = () => {
   return (
     <TopErrorBoundary>
-      <Authenticator>
       <Provider unstable_createStore={() => appJotaiStore}>
         <Authenticator>
         <ExcalidrawWrapper />
         </Authenticator>
       </Provider>
-      </Authenticator>
     </TopErrorBoundary>
   );
 };
