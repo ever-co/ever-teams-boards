@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "../src/analytics";
 import { getDefaultAppState } from "../src/appState";
 import { ErrorDialog } from "../src/components/ErrorDialog";
-import { TopErrorBoundary } from "../components/TopErrorBoundary";
+import { TopErrorBoundary } from "./components/TopErrorBoundary";
 import {
   APP_NAME,
   EVENT,
