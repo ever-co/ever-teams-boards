@@ -1,18 +1,18 @@
-import polyfill from "../src/polyfill";
+import polyfill from "../polyfill";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { trackEvent } from "../src/analytics";
-import { getDefaultAppState } from "../src/appState";
-import { ErrorDialog } from "../src/components/ErrorDialog";
-import { TopErrorBoundary } from "../src/components/TopErrorBoundary";
+import { trackEvent } from "../analytics";
+import { getDefaultAppState } from "../appState";
+import { ErrorDialog } from "../components/ErrorDialog";
+import { TopErrorBoundary } from "../components/TopErrorBoundary";
 import {
   APP_NAME,
   EVENT,
   THEME,
   TITLE_TIMEOUT,
   VERSION_TIMEOUT,
-} from "../src/constants";
-import { loadFromBlob } from "../src/data/blob";
+} from "../constants";
+import { loadFromBlob } from "../data/blob";
 import {
   ExcalidrawElement,
   FileId,
@@ -103,6 +103,7 @@ import { openConfirmModal } from "../src/components/OverwriteConfirm/OverwriteCo
 import { OverwriteConfirmDialog } from "../src/components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../src/components/Trans";
 import { Authenticator } from "./auth";
+import { Authenticator, authUserAtom } from "./auth";
 
 polyfill();
 
@@ -310,6 +311,7 @@ const ExcalidrawWrapper = () => {
     return isCollaborationLink(window.location.href);
   });
   const autoStartLive = useRef(false);
+  const authUser = useAtomValue(authUserAtom);
 
   useHandleLibrary({
     excalidrawAPI,
@@ -318,7 +320,6 @@ const ExcalidrawWrapper = () => {
 
   const autoStartCollaboration = useCallback(
     (collabAPI: CollabAPI) => {
-      // collabAPI.setUsername();
       setCollabDialogShown(true);
       collabAPI.startCollaboration(null);
     },
@@ -328,6 +329,10 @@ const ExcalidrawWrapper = () => {
   useEffect(() => {
     if (!excalidrawAPI || (!isCollabDisabled && !collabAPI)) {
       return;
+    }
+
+    if (collabAPI && authUser) {
+      collabAPI.setUsername(authUser.name);
     }
 
     const loadImages = (
@@ -538,6 +543,7 @@ const ExcalidrawWrapper = () => {
   }, [
     isCollabDisabled,
     autoStartCollaboration,
+    authUser,
     collabAPI,
     excalidrawAPI,
     setLangCode,
@@ -827,7 +833,9 @@ const ExcalidrawApp = () => {
     <TopErrorBoundary>
       <Authenticator>
       <Provider unstable_createStore={() => appJotaiStore}>
+        <Authenticator>
         <ExcalidrawWrapper />
+        </Authenticator>
       </Provider>
       </Authenticator>
     </TopErrorBoundary>
