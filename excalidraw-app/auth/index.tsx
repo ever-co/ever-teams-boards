@@ -1,5 +1,6 @@
 import { atom, useSetAtom } from "jotai";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { EverTeamsLogo } from "../components/ever-teams-logo";
 
 const GAUZY_API_URL = import.meta.env.VITE_APP_GAUZY_API_URL;
 const TOKEN_COOKIE_NAME = "auth-token";
@@ -56,7 +57,20 @@ export function Authenticator(props: PropsWithChildren) {
         </div>
       )}
       {authenticated === false && <div style={style}>Access denied</div>}
-      {authenticated && props.children}
+      {authenticated && (
+        <>
+          <EverTeamsLogo
+            style={{
+              transform: "scale(0.75)",
+              position: "fixed",
+              top: "1.25rem",
+              left: "3.5rem",
+              zIndex: 10,
+            }}
+          />
+          <div style={{ height: "100%", width: "100%" }}>{props.children}</div>
+        </>
+      )}
     </>
   );
 }
