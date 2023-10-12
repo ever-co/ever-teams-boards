@@ -1,6 +1,7 @@
 import { atom, useSetAtom } from "jotai";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { CSSProperties, PropsWithChildren, useEffect, useState } from "react";
 import { EverTeamsLogo } from "../components/ever-teams-logo";
+import { EVER_TEAMS_URL } from "../app_constants";
 
 const GAUZY_API_URL = import.meta.env.VITE_APP_GAUZY_API_URL;
 const TOKEN_COOKIE_NAME = "auth-token";
@@ -12,6 +13,7 @@ const style = {
   fontSize: "1.2rem",
   fontWeight: "normal",
   fontFamily: "sans-serif",
+  flexDirection: "column" as CSSProperties["flexDirection"],
 };
 
 export const authUserAtom = atom<AuthUser | null>(null);
@@ -56,7 +58,7 @@ export function Authenticator(props: PropsWithChildren) {
           Loading...
         </div>
       )}
-      {authenticated === false && <div style={style}>Access denied</div>}
+      {authenticated === false && <UnauthorizedMessage />}
       {authenticated && (
         <>
           <EverTeamsLogo
@@ -72,6 +74,23 @@ export function Authenticator(props: PropsWithChildren) {
         </>
       )}
     </>
+  );
+}
+
+function UnauthorizedMessage() {
+  return (
+    <div style={style}>
+      <div>Access denied</div>
+
+      <a
+        href={`${EVER_TEAMS_URL}/auth/passcode?redirect=${encodeURIComponent(
+          location.href,
+        )}`}
+        style={{ marginTop: "1rem" }}
+      >
+        Login
+      </a>
+    </div>
   );
 }
 
