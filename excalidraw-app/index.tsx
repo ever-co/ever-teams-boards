@@ -102,7 +102,7 @@ import { ShareableLinkDialog } from "../src/components/ShareableLinkDialog";
 import { openConfirmModal } from "../src/components/OverwriteConfirm/OverwriteConfirmState";
 import { OverwriteConfirmDialog } from "../src/components/OverwriteConfirm/OverwriteConfirm";
 import Trans from "../src/components/Trans";
-import { Authenticator, authUserAtom } from "../src/excalidraw-app/auth";
+import { Authenticator, authUserAtom } from "./auth";
 
 polyfill();
 
@@ -409,14 +409,14 @@ const ExcalidrawWrapper = () => {
 
     initializeScene({ collabAPI, excalidrawAPI })
       .then(async (data) => {
-      loadImages(data, /* isInitialLoad */ true);
-      initialStatePromiseRef.current.promise.resolve(data.scene);
+        loadImages(data, /* isInitialLoad */ true);
+        initialStatePromiseRef.current.promise.resolve(data.scene);
       })
       .then(() => {
         if (autoStartLive.current && collabAPI) {
           autoStartCollaboration(collabAPI);
         }
-    });
+      });
 
     const onHashChange = async (event: HashChangeEvent) => {
       event.preventDefault();
@@ -735,22 +735,6 @@ const ExcalidrawWrapper = () => {
             toggleTheme: true,
             export: {
               onExportToBackend,
-              renderCustomUI: (elements, appState, files) => {
-                return (
-                  <ExportToExcalidrawPlus
-                    elements={elements}
-                    appState={appState}
-                    files={files}
-                    onError={(error) => {
-                      excalidrawAPI?.updateScene({
-                        appState: {
-                          errorMessage: error.message,
-                        },
-                      });
-                    }}
-                  />
-                );
-              },
             },
           },
         }}
@@ -832,7 +816,7 @@ const ExcalidrawApp = () => {
     <TopErrorBoundary>
       <Provider unstable_createStore={() => appJotaiStore}>
         <Authenticator>
-        <ExcalidrawWrapper />
+          <ExcalidrawWrapper />
         </Authenticator>
       </Provider>
     </TopErrorBoundary>
