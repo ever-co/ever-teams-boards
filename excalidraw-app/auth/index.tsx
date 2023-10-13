@@ -86,7 +86,7 @@ function UnauthorizedMessage() {
         href={`${EVER_TEAMS_URL}/auth/passcode?redirect=${encodeURIComponent(
           location.href,
         )}`}
-        style={{ marginTop: "1rem" }}
+        style={{ marginTop: "1rem", color: "#6755c9" }}
       >
         Login
       </a>
