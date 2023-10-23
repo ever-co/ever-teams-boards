@@ -80,6 +80,7 @@ export const isOfflineAtom = atom(false);
 interface CollabState {
   errorMessage: string;
   username: string;
+  avatar: string;
   activeRoomLink: string;
 }
 
@@ -94,6 +95,7 @@ export interface CollabAPI {
   syncElements: CollabInstance["syncElements"];
   fetchImageFilesFromFirebase: CollabInstance["fetchImageFilesFromFirebase"];
   setUsername: (username: string) => void;
+  setAvatar: (avatar: string) => void;
 }
 
 interface PublicProps {
@@ -119,6 +121,7 @@ class Collab extends PureComponent<Props, CollabState> {
       errorMessage: "",
       username: importUsernameFromLocalStorage() || "",
       activeRoomLink: "",
+      avatar: "",
     };
     this.portal = new Portal(this);
     this.fileManager = new FileManager({
@@ -167,6 +170,7 @@ class Collab extends PureComponent<Props, CollabState> {
       fetchImageFilesFromFirebase: this.fetchImageFilesFromFirebase,
       stopCollaboration: this.stopCollaboration,
       setUsername: this.setUsername,
+      setAvatar: this.setAvatar,
     };
 
     appJotaiStore.set(collabAPIAtom, collabAPI);
@@ -508,7 +512,7 @@ class Collab extends PureComponent<Props, CollabState> {
             );
             break;
           case "MOUSE_LOCATION": {
-            const { pointer, button, username, selectedElementIds } =
+            const { pointer, button, avatar, username, selectedElementIds } =
               decryptedData.payload;
             const socketId: SocketUpdateDataSource["MOUSE_LOCATION"]["payload"]["socketId"] =
               decryptedData.payload.socketId ||
@@ -521,6 +525,7 @@ class Collab extends PureComponent<Props, CollabState> {
             user.button = button;
             user.selectedElementIds = selectedElementIds;
             user.username = username;
+            user.avatarUrl = avatar;
             collaborators.set(socketId, user);
             this.excalidrawAPI.updateScene({
               collaborators,
@@ -528,11 +533,13 @@ class Collab extends PureComponent<Props, CollabState> {
             break;
           }
           case "IDLE_STATUS": {
-            const { userState, socketId, username } = decryptedData.payload;
+            const { userState, socketId, username, avatar } =
+              decryptedData.payload;
             const collaborators = new Map(this.collaborators);
             const user = collaborators.get(socketId) || {}!;
             user.userState = userState;
             user.username = username;
+            user.avatarUrl = avatar;
             this.excalidrawAPI.updateScene({
               collaborators,
             });
@@ -814,6 +821,10 @@ class Collab extends PureComponent<Props, CollabState> {
 
   setUsername = (username: string) => {
     this.setState({ username });
+  };
+
+  setAvatar = (avatar: string) => {
+    this.setState({ avatar });
   };
 
   onUsernameChange = (username: string) => {
