@@ -332,6 +332,7 @@ const ExcalidrawWrapper = () => {
 
     if (collabAPI && authUser) {
       collabAPI.setUsername(authUser.name);
+      collabAPI.setAvatar(authUser.imageUrl);
     }
 
     const loadImages = (
