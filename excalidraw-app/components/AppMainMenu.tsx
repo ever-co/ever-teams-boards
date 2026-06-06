@@ -1,7 +1,8 @@
 import React from "react";
-import { PlusPromoIcon } from "../../src/components/icons";
+import { LinkIcon } from "../../src/components/icons";
 import { MainMenu } from "../../src/packages/excalidraw/index";
 import { LanguageList } from "./LanguageList";
+import { EVER_TEAMS_URL } from "../app_constants";
 
 export const AppMainMenu: React.FC<{
   setCollabDialogShown: (toggle: boolean) => any;
@@ -24,17 +25,9 @@ export const AppMainMenu: React.FC<{
       <MainMenu.DefaultItems.Help />
       <MainMenu.DefaultItems.ClearCanvas />
       <MainMenu.Separator />
-      <MainMenu.ItemLink
-        icon={PlusPromoIcon}
-        href={`${
-          import.meta.env.VITE_APP_PLUS_LP
-        }/plus?utm_source=excalidraw&utm_medium=app&utm_content=hamburger`}
-        className="ExcalidrawPlus"
-      >
-        Excalidraw+
+      <MainMenu.ItemLink icon={LinkIcon} target="_self" href={EVER_TEAMS_URL}>
+        Ever Teams
       </MainMenu.ItemLink>
-      <MainMenu.DefaultItems.Socials />
-      <MainMenu.Separator />
       <MainMenu.DefaultItems.ToggleTheme />
       <MainMenu.ItemCustom>
         <LanguageList style={{ width: "100%" }} />
