@@ -1,11 +1,13 @@
-*
-!.env.development
-!.env.production
-!.eslintrc.json
-!.npmrc
-!.prettierrc
-!package.json
-!public/
-!src/
-!tsconfig.json
-!yarn.lock
+# Keep the build context lean but DO NOT deny-all: the Vite build needs
+# index.html, vite.config.ts, tsconfig*.json, src/, excalidraw-app/, public/,
+# scripts/, .env.* — so we only exclude heavy/irrelevant paths here.
+node_modules
+**/node_modules
+.git
+build
+dist
+coverage
+*.log
+firebase-project
+dev-docs
+.codesandbox
