@@ -111,6 +111,7 @@ export type SocketUpdateDataSource = {
       button: "down" | "up";
       selectedElementIds: AppState["selectedElementIds"];
       username: string;
+      avatar: string;
     };
   };
   IDLE_STATUS: {
@@ -119,6 +120,7 @@ export type SocketUpdateDataSource = {
       socketId: string;
       userState: UserIdleState;
       username: string;
+      avatar: string;
     };
   };
 };

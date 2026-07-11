@@ -188,6 +188,7 @@ class Portal {
           socketId: this.socket.id,
           userState,
           username: this.collab.state.username,
+          avatar: this.collab.state.avatar,
         },
       };
       return this._broadcastSocketData(
@@ -211,6 +212,7 @@ class Portal {
           selectedElementIds:
             this.collab.excalidrawAPI.getAppState().selectedElementIds,
           username: this.collab.state.username,
+          avatar: this.collab.state.avatar,
         },
       };
       return this._broadcastSocketData(
