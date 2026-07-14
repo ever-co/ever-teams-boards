@@ -17,7 +17,7 @@ jobs:
           reactions: "+1"
       - name: Get PR SHA
         id: sha
-        uses: actions/github-script@v4
+        uses: actions/github-script@v8
         with:
           result-encoding: string
           script: |
@@ -28,12 +28,12 @@ jobs:
               pull_number: number,
             });
             return pr.data.head.sha
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           ref: ${{ steps.sha.outputs.result }}
           fetch-depth: 2
       - name: Setup Node.js 18.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v7
         with:
           node-version: 18.x
       - name: Set up publish access
