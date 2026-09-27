@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Ever Teams Boards | Hand-drawn look & feel • Collaborative • Secure</title>
+    <title>
+      Ever Teams Boards | Hand-drawn look & feel • Collaborative • Secure
+    </title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no"
@@ -11,10 +13,19 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#121212" />
 
+    <!--
+      Self-referencing canonical. The app is a single-URL SPA: boards live in
+      the #room= / #json= fragment (never sent to the server, dropped by
+      crawlers) and robots.txt only allows "/$", so the root is the one
+      indexable URL. nginx serves this same index.html for every path, and
+      those fallback copies correctly point back here.
+    -->
+    <link rel="canonical" href="https://board.ever.team/" />
+
     <!-- Primary Meta Tags -->
     <meta
       name="title"
-      content="Excalidraw — Collaborative whiteboarding made easy"
+      content="Ever Teams Boards — Collaborative whiteboarding made easy"
     />
     <meta
       name="description"
@@ -25,6 +36,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:site_name" content="Ever Teams Boards" />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://board.ever.team/" />
     <meta
       property="og:title"
       content="Ever Teams — Collaborative whiteboarding made easy"
@@ -69,7 +81,7 @@
     </script>
     <% } %>
 
-    <link rel="icon" type="image/png"  href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.ico" />
 
     <!-- Excalidraw version -->
     <meta name="version" content="{version}" />
@@ -160,7 +172,7 @@
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <header>
-      <h1 class="visually-hidden">Excalidraw</h1>
+      <h1 class="visually-hidden">Ever Teams Boards</h1>
     </header>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
